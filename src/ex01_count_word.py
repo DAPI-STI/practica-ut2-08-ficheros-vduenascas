@@ -36,4 +36,19 @@ def count_word_in_file(path: str | Path, word: str) -> int:
     Fichero: "Hola hola mundo"
     word="hola" -> 2
     """
-    raise NotImplementedError("Implementa count_word_in_file(path, word)")
+    contador = 0
+    if not word.strip():
+        raise ValueError("La palabra a buscar no puede estar vacía o solo contener espacios.")
+    with open(path, "r", encoding="utf-8") as file:
+        contenido = file.read().lower()
+        traductor = str.maketrans(string.punctuation, ' ' * len(string.punctuation))
+        contenido = contenido.translate(traductor)
+        palabras = contenido.split()
+        contador = sum(1 for p in palabras if p == word.lower())
+    return contador
+# NO MODIFICAR - INICIO
+if __name__ == "__main__":
+    ruta_fichero = Path(__file__).parent / "data" / "ex01_text.txt"
+    palabra_a_buscar = "sol"
+    apariciones = count_word_in_file(ruta_fichero, palabra_a_buscar)
+    print(f"La palabra '{palabra_a_buscar}' aparece {apariciones} veces en el fichero.")
